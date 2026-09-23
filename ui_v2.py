@@ -28,7 +28,7 @@ def apply_theme():
 }
 html,body,[class*="css"]{font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",sans-serif}
 .stApp{background:radial-gradient(circle at 75% 0%,#102a49 0%,var(--bg) 42%,#040b15 100%);color:var(--text)}
-.block-container{max-width:1540px;padding-top:1rem;padding-bottom:3rem}
+.block-container{max-width:1760px;padding-top:1rem;padding-bottom:3rem}
 header[data-testid="stHeader"]{background:rgba(5,14,27,.72);backdrop-filter:blur(16px)}
 section[data-testid="stSidebar"]{background:linear-gradient(180deg,#061526 0%,#071b31 100%);border-right:1px solid var(--line)}
 section[data-testid="stSidebar"]>div{padding-top:1rem}
@@ -110,6 +110,13 @@ a{color:#51b6ff}
 div[data-testid="stMarkdownContainer"] strong{color:#f0f6ff}
 .market-up{color:var(--up)!important}.market-down{color:var(--down)!important}.market-flat{color:#8da7c2!important}
 .dashboard-section{font-size:12px;color:#7694b2;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:8px 0 10px}
+.dash-heading{padding:12px 3px 18px}.dash-heading h1{font-size:clamp(26px,3vw,38px);margin:0 0 5px}.dash-heading p{color:var(--muted);margin:0}
+.dash-panel{border:1px solid var(--line);background:linear-gradient(145deg,#0d223b,#09192c);border-radius:14px;padding:18px;min-height:136px}
+.dash-panel-label{color:#a8c4df;font-size:13px;font-weight:750}.dash-panel-value{font-size:25px;font-weight:850;margin:11px 0 4px}.dash-panel-note{font-size:12px;color:var(--muted)}
+.dash-placeholder{border:1px dashed #285174;border-radius:10px;padding:24px;color:#8ba5c0;background:#091a2d;margin-top:12px}
+.dash-tag{font-size:11px;border:1px solid #315474;border-radius:100px;color:#9fbbd5;padding:3px 8px;margin-left:7px}
+.dash-subtitle{font-weight:800;font-size:17px;margin:0 0 12px}.dash-positive{color:var(--up)}.dash-negative{color:var(--down)}
+.dash-watch{border-bottom:1px solid var(--line);padding:9px 0;display:flex;justify-content:space-between;gap:10px;font-size:13px}.dash-watch:last-child{border:0}
 @media(max-width:900px){.block-container{padding-left:1rem;padding-right:1rem}.planx-hero{padding:20px}.planx-hero h1{font-size:26px}}
 </style>
 """,
