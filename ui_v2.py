@@ -117,6 +117,18 @@ div[data-testid="stMarkdownContainer"] strong{color:#f0f6ff}
 .dash-tag{font-size:11px;border:1px solid #315474;border-radius:100px;color:#9fbbd5;padding:3px 8px;margin-left:7px}
 .dash-subtitle{font-weight:800;font-size:17px;margin:0 0 12px}.dash-positive{color:var(--up)}.dash-negative{color:var(--down)}
 .dash-watch{border-bottom:1px solid var(--line);padding:9px 0;display:flex;justify-content:space-between;gap:10px;font-size:13px}.dash-watch:last-child{border:0}
+.dash-chart-empty{height:285px;border:1px solid #204667;border-radius:10px;background:linear-gradient(160deg,#091d33,#071728);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#91acc7;text-align:center;padding:18px;margin:14px 0}
+.dash-chart-empty span{font-size:42px;color:#4886bf}.dash-chart-empty strong{font-size:17px;color:#d4e6f7}.dash-chart-empty small{font-size:12px}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(1) p:before{content:"⌂"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(2) p:before{content:"▥"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(3) p:before{content:"◫"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(4) p:before{content:"▤"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(5) p:before{content:"◇"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(6) p:before{content:"◉"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(7) p:before{content:"♡"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(8) p:before{content:"✦"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:nth-child(9) p:before{content:"☷"}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label p:before{display:inline-block;width:24px;margin-right:10px;color:#9bc8ff;font-size:18px}
 @media(max-width:900px){.block-container{padding-left:1rem;padding-right:1rem}.planx-hero{padding:20px}.planx-hero h1{font-size:26px}}
 </style>
 """,
@@ -130,8 +142,8 @@ def brand():
 <div class="planx-brand">
   <div class="planx-brand-mark">↗</div>
   <div>
-    <div class="planx-brand-title">STOCK DASH</div>
-    <div class="planx-brand-sub">DATA TO INSIGHT</div>
+    <div class="planx-brand-title">PLAN X</div>
+    <div class="planx-brand-sub">더 넓은 시선, 더 나은 투자</div>
   </div>
 </div>
 """,
