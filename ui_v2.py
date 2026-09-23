@@ -22,24 +22,24 @@ def apply_theme():
         """
 <style>
 :root{
-  --bg:#06101f; --bg2:#08182b; --surface:#0b1b30; --surface2:#0e233d;
-  --line:#173453; --line2:#24496f; --text:#edf5ff; --muted:#86a0bd;
-  --blue:#168cff; --cyan:#26b7ff; --up:#ff466d; --down:#1597ff; --green:#20d3a1;
+  --bg:#050d19; --bg2:#081426; --surface:#0a1729; --surface2:#0d1d33;
+  --line:#1a304c; --line2:#28496d; --text:#f3f7ff; --muted:#8ea3bd;
+  --blue:#3b82f6; --cyan:#38bdf8; --up:#ff4d67; --down:#18c59c; --green:#18c59c;
 }
 html,body,[class*="css"]{font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",sans-serif}
-.stApp{background:radial-gradient(circle at 75% 0%,#102a49 0%,var(--bg) 42%,#040b15 100%);color:var(--text)}
-.block-container{max-width:1540px;padding-top:1rem;padding-bottom:3rem}
+.stApp{background:radial-gradient(circle at 78% -8%,#132845 0%,var(--bg) 38%,#030914 100%);color:var(--text)}
+.block-container{max-width:1600px;padding-top:1.15rem;padding-bottom:3rem}
 header[data-testid="stHeader"]{background:rgba(5,14,27,.72);backdrop-filter:blur(16px)}
-section[data-testid="stSidebar"]{background:linear-gradient(180deg,#061526 0%,#071b31 100%);border-right:1px solid var(--line)}
+section[data-testid="stSidebar"]{background:linear-gradient(180deg,#071426 0%,#081a2e 72%,#0b2037 100%);border-right:1px solid var(--line)}
 section[data-testid="stSidebar"]>div{padding-top:1rem}
 [data-testid="stSidebar"] .stRadio>label{display:none}
 [data-testid="stSidebar"] .stRadio div[role="radiogroup"]{gap:5px}
 [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label{
-  border-radius:11px;padding:.55rem .65rem;color:#9bb4ce;transition:.15s;background:transparent
+  border-radius:10px;padding:.68rem .75rem;color:#9bb4ce;transition:.15s;background:transparent
 }
 [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:hover{background:#0d2743;color:#e9f5ff}
 [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:has(input:checked){
-  background:linear-gradient(90deg,#0c3762,#0b2948);color:#fff;font-weight:800;
+  background:linear-gradient(90deg,#17345b,#102844);color:#fff;font-weight:800;
   box-shadow:inset 3px 0 var(--blue)
 }
 h1,h2,h3,h4{color:var(--text);letter-spacing:-.035em}
@@ -48,12 +48,12 @@ p,li{line-height:1.55}
 [data-testid="stCaptionContainer"],[data-testid="stCaptionContainer"] p{color:var(--muted)}
 [data-testid="stMetric"]{
   background:linear-gradient(145deg,#0d223b,#091a2e);border:1px solid var(--line);
-  border-radius:13px;padding:15px 17px;box-shadow:0 10px 28px rgba(0,0,0,.18)
+  border-radius:12px;padding:16px 18px;box-shadow:0 14px 32px rgba(0,0,0,.22)
 }
 [data-testid="stMetricLabel"]{color:#7795b5}
 [data-testid="stMetricValue"]{color:#f2f7ff;font-weight:850}
 [data-testid="stVerticalBlockBorderWrapper"]{
-  border-color:var(--line)!important;border-radius:14px!important;
+  border-color:var(--line)!important;border-radius:13px!important;
   background:linear-gradient(145deg,rgba(13,34,59,.96),rgba(8,24,42,.96));
   box-shadow:0 12px 30px rgba(0,0,0,.16)
 }
@@ -81,7 +81,7 @@ p,li{line-height:1.55}
 .planx-brand-sub{font-size:10px;color:#6385a8;margin-top:3px}
 .planx-hero{
  background:linear-gradient(135deg,rgba(10,31,53,.9),rgba(8,24,43,.9));
- border:1px solid var(--line);border-radius:18px;padding:23px 25px;margin-bottom:16px;
+ border:1px solid var(--line);border-radius:14px;padding:21px 24px;margin-bottom:16px;
  box-shadow:0 16px 42px rgba(0,0,0,.18);position:relative;overflow:hidden
 }
 .planx-hero:after{
@@ -92,7 +92,7 @@ p,li{line-height:1.55}
 .planx-hero h1{margin:0;font-size:30px;line-height:1.18}
 .planx-hero p{margin:8px 0 0;color:#8da7c2;font-size:13px;max-width:850px}
 .planx-card{
- background:linear-gradient(145deg,#0d223b,#09192c);border:1px solid var(--line);border-radius:13px;
+ background:linear-gradient(145deg,#0d223b,#09192c);border:1px solid var(--line);border-radius:12px;
  padding:16px 17px;min-height:112px;box-shadow:0 10px 26px rgba(0,0,0,.14);position:relative;overflow:hidden
 }
 .planx-card:before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:linear-gradient(#168cff,#26b7ff)}
@@ -111,6 +111,22 @@ div[data-testid="stMarkdownContainer"] strong{color:#f0f6ff}
 .market-up{color:var(--up)!important}.market-down{color:var(--down)!important}.market-flat{color:#8da7c2!important}
 .dashboard-section{font-size:12px;color:#7694b2;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:8px 0 10px}
 @media(max-width:900px){.block-container{padding-left:1rem;padding-right:1rem}.planx-hero{padding:20px}.planx-hero h1{font-size:26px}}
+
+/* premium dashboard reference: compact cards, subtle glass, crisp chart/data surfaces */
+[data-testid="stMetric"]{min-height:108px;position:relative;overflow:hidden}
+[data-testid="stMetric"]:after{content:"";position:absolute;inset:auto -20px -36px auto;width:110px;height:80px;background:radial-gradient(circle,rgba(59,130,246,.13),transparent 70%)}
+[data-testid="stMetricDelta"] svg{display:none}
+[data-testid="stSidebar"] hr{margin:1rem 0;border-color:#17304d!important}
+[data-testid="stSidebar"] .stButton>button{background:#0b1c31;border-color:#1a3657}
+.stTabs [data-baseweb="tab-highlight"]{background:#3b82f6}
+[data-testid="stDataFrame"]{background:#071525}
+div[data-testid="stPlotlyChart"]{border:1px solid var(--line);border-radius:13px;padding:8px;background:linear-gradient(145deg,#091a2e,#071422)}
+.planx-brand-mark{background:linear-gradient(145deg,#2563eb,#60a5fa);border-radius:8px}
+.planx-brand-title{font-size:21px}
+.planx-hero{background:linear-gradient(135deg,rgba(11,28,49,.96),rgba(7,19,34,.96))}
+.planx-card{background:linear-gradient(145deg,#0c1d32,#081626)}
+.planx-card:before{width:2px;background:linear-gradient(#3b82f6,#38bdf8)}
+@media(min-width:1100px){section[data-testid="stSidebar"]{min-width:238px!important;max-width:238px!important}}
 </style>
 """,
         unsafe_allow_html=True,
