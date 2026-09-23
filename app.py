@@ -237,19 +237,17 @@ if latest:
 if st.session_state.get("force_nav"):
     st.session_state.nav_choice = st.session_state.pop("force_nav")
 
-NAV_ITEMS = ["대시보드", "내 종목", "계좌 연결", "교육자료", "설정"]
-legacy = {"홈":"대시보드", "통합 분석":"내 종목", "AI 인사이트":"내 종목", "관심 종목":"내 종목", "포트폴리오":"계좌 연결"}
-current = st.session_state.get("nav_choice", "대시보드")
+NAV_ITEMS = ["홈", "시장 현황", "종목 분석", "공시 분석", "테마 & 섹터", "포트폴리오", "관심 종목", "AI 인사이트", "데이터 연결 관리", "교육자료"]
+legacy = {"대시보드":"홈", "내 종목":"관심 종목", "계좌 연결":"포트폴리오", "설정":"데이터 연결 관리", "통합 분석":"관심 종목"}
+current = st.session_state.get("nav_choice", "홈")
 if current not in NAV_ITEMS:
-    st.session_state.nav_choice = legacy.get(current, "설정")
-    if current not in legacy:
-        st.session_state.advanced_page = current
+    st.session_state.nav_choice = legacy.get(current, "홈")
 
 with st.sidebar:
     brand()
     nav = st.radio("메뉴", NAV_ITEMS, key="nav_choice")
     st.markdown("---")
-    if choices and nav == "설정":
+    if choices:
         codes = list(choices)
         preferred = st.session_state.get("selected_code")
         selected = st.selectbox(
@@ -322,14 +320,17 @@ def global_search():
 
 
 def render_home():
-    st.markdown('<div class="dash-heading"><h1>시장을 읽고, 더 나은 판단을 만듭니다.</h1><p>공식 시세·재무·공시와 내 계좌를 한눈에 살펴보세요.</p></div>', unsafe_allow_html=True)
-    global_search()
+    search_col, status_col = st.columns([2, 1])
+    with search_col: global_search()
+    with status_col:
+        configured = len(active_capabilities())
+        source_badge(f"공식 데이터 연결 {'준비됨' if configured else '대기'} · {configured}개 기능", "ok" if configured else "wait")
+    st.markdown('<div class="dash-heading"><h1>시장을 읽고, 더 나은 판단을 만듭니다.</h1><p>데이터, 인사이트, 그리고 더 나은 투자의 시작. 공식 시세·재무·공시와 내 계좌를 한눈에 살펴보세요.</p></div>', unsafe_allow_html=True)
     cols = st.columns(3)
     for col, (title, cap) in zip(cols, [("KOSPI", "market.index"), ("KOSDAQ", "market.index"), ("USD/KRW", "macro.fx")]):
         with col:
             st.markdown(f'<div class="dash-panel"><div class="dash-panel-label">{title}<span class="dash-tag">연결 대기</span></div><div class="dash-panel-value">—</div><div class="dash-panel-note">{cap} · 시계열 API 미연결</div></div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="dashboard-section">선택 종목 · 내 계좌</div>', unsafe_allow_html=True)
     left, right = st.columns([2.1, 1], gap="medium")
     with left:
         with st.container(border=True):
@@ -339,19 +340,13 @@ def render_home():
             if report:
                 st.metric("조회된 기준 종가", f"{report['price']:,.0f}원")
                 st.caption(f"시세 기준일 {report.get('price_date', '확인 필요')} · {'가상 예시' if report.get('sample') else '공식 조회 자료'}")
-                st.markdown("#### 연간 매출·영업이익")
-                years = report.get("years", [])
-                if years:
-                    chart = pd.DataFrame([{"연도": str(y["year"]), "매출": y["revenue"], "영업이익": y["profit"]} for y in years]).set_index("연도")
-                    st.bar_chart(chart, color=["#348dff", "#27c8d8"], height=280)
-                    st.caption("단위: 억원 · 연간 확정 재무자료. 주가 시계열은 제공되지 않습니다.")
             elif stock.get("price_snapshot"):
                 snap = stock["price_snapshot"]
                 st.metric("조회된 기준 종가", f"{snap['price']:,.0f}원")
                 st.caption("시세 기준일 " + snap["date"])
-                empty_state("연간 실적 없음", "공식 재무자료를 조회하면 실적 그래프가 표시됩니다.")
             else:
-                empty_state("종목을 검색해 시작", "종목을 분석하면 기준 종가와 연간 실적을 표시합니다. 주가 시계열은 별도 API가 필요합니다.")
+                st.caption("종목을 분석하면 조회된 기준 종가가 표시됩니다.")
+            st.markdown('<div class="dash-chart-empty"><span>▥</span><strong>주가 시계열 미연결</strong><small>일별 시세 조회만 지원합니다. 시계열 API 연결 후 주가 추이가 표시됩니다.</small></div>', unsafe_allow_html=True)
     with right:
         with st.container(border=True):
             st.markdown('<div class="dash-subtitle">내 포트폴리오</div>', unsafe_allow_html=True)
@@ -378,12 +373,17 @@ def render_home():
 
     bottom = st.columns([1, 1, 1], gap="medium")
     with bottom[0], st.container(border=True):
-        st.markdown('<div class="dash-subtitle">재무 진단</div>', unsafe_allow_html=True)
+        st.markdown('<div class="dash-subtitle">주요 재무 지표 <span class="dash-tag">연간 자료</span></div>', unsafe_allow_html=True)
         if report:
-            result = brief(report)
-            st.metric("성장", result["growth"])
-            st.write("가치 상태 · " + result["value"])
-            st.caption("확정 결산과 조회된 자료 기반 · 가상 종목이면 예시 분석")
+            years = report.get("years", [])
+            metric = st.radio("재무 지표", ["매출액", "영업이익"], horizontal=True, label_visibility="collapsed")
+            field = "revenue" if metric == "매출액" else "profit"
+            if years:
+                chart = pd.DataFrame([{"연도": str(y["year"]), metric: y[field]} for y in years]).set_index("연도")
+                st.bar_chart(chart, color="#348dff", height=190)
+                st.caption(f"단위: 억원 · {'가상 예시' if report.get('sample') else '확정 연간 자료'}")
+            else:
+                st.caption("조회된 재무자료가 없습니다.")
         else:
             st.caption("종목 분석 후 표시됩니다.")
     with bottom[1], st.container(border=True):
@@ -396,7 +396,7 @@ def render_home():
         else:
             st.caption("조회된 공시가 없습니다. 실제 종목을 분석하면 표시됩니다.")
     with bottom[2], st.container(border=True):
-        st.markdown('<div class="dash-subtitle">분석 인사이트</div>', unsafe_allow_html=True)
+        st.markdown('<div class="dash-subtitle">AI 인사이트 <span class="dash-tag">규칙 기반 요약</span></div>', unsafe_allow_html=True)
         if report:
             st.write(brief(report)["summary"])
             st.caption("규칙 기반 요약 · 투자 판단 참고용")
@@ -730,27 +730,24 @@ def render_placeholder(title, subtitle, required):
                 st.caption(cap)
 
 
-if nav == "대시보드":
+if nav == "홈":
     render_home()
-elif nav == "내 종목":
+elif nav == "관심 종목":
     render_research(store, state, sample_mode)
-elif nav == "계좌 연결":
+elif nav == "포트폴리오":
     render_portfolio(store, sample_mode)
 elif nav == "교육자료":
     render_education()
+elif nav == "시장 현황": render_market()
+elif nav == "종목 분석": render_stock()
+elif nav == "공시 분석": render_disclosures()
+elif nav == "AI 인사이트":
+    hero("분석 인사이트", "조회한 공식 자료를 바탕으로 핵심 변화를 확인합니다.", "INSIGHT")
+    if report: st.write(brief(report)["summary"])
+    else: empty_state("분석 자료 없음", "종목을 검색하면 규칙 기반 요약을 표시합니다.")
+elif nav == "테마 & 섹터":
+    render_placeholder("테마 & 섹터", "산업별 흐름을 확인합니다.", [("업종 강도", "sector.performance", "업종별 등락과 거래대금"), ("업종 수급", "sector.flow", "외국인·기관 자금 흐름"), ("산업 수출", "industry.export", "품목별 수출 변화")])
 else:
-    st.header("설정과 추가 도구")
+    st.header("데이터 연결 관리")
     st.caption("계좌 연결 없이도 내 종목을 추가하고 조사 결과를 확인할 수 있습니다.")
-    options = ["사용 안내", "데이터 연결 관리", "종목 분석", "공시 분석", "시장 현황", "테마 & 섹터"]
-    previous = st.session_state.get("advanced_page", "사용 안내")
-    if previous not in options: st.session_state.advanced_page = "사용 안내"
-    page = st.selectbox("필요한 도구", options, key="advanced_page")
-    if page == "사용 안내":
-        st.markdown("**1. 내 종목**에서 기업 이름을 추가하세요.\n\n**2. 조사 요청**을 열어 요청문을 이 채팅에 보내세요.\n\n**3. 종목을 선택**해 핵심 요약과 자세한 근거를 확인하세요.")
-        st.link_button("상세 사용 안내", "https://github.com/planxs-ai/stock-dash/blob/main/CHAT-RESEARCH.md")
-    elif page == "데이터 연결 관리": render_sources()
-    elif page == "종목 분석": render_stock()
-    elif page == "공시 분석": render_disclosures()
-    elif page == "시장 현황": render_market()
-    else:
-        render_placeholder("테마 & 섹터", "산업별 흐름을 확인합니다.", [("업종 강도", "sector.performance", "업종별 등락과 거래대금"), ("업종 수급", "sector.flow", "외국인·기관 자금 흐름"), ("산업 수출", "industry.export", "품목별 수출 변화")])
+    render_sources()
